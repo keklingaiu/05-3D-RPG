@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Player/Player.gd" type="Script" id=1]
 [ext_resource path="res://Player/Player.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://NPC/NPC.gd" type="Script" id=7]
 [ext_resource path="res://UI/Dialogue.gd" type="Script" id=8]
 [ext_resource path="res://UI/UI.gd" type="Script" id=9]
+[ext_resource path="res://Drone/Drone.tscn" type="PackedScene" id=10]
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_color = Color( 0, 0.203922, 1, 1 )
@@ -30,8 +31,8 @@ radius = 5.15594
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
 transform = Transform( -0.766044, 0, -0.642788, 0, 1, 0, 0.642788, 0, -0.766044, 41.2165, 0.384771, 13.342 )
-collision_layer = 3
-collision_mask = 3
+collision_layer = 2
+collision_mask = 7
 script = ExtResource( 1 )
 
 [node name="Pivot" type="Position3D" parent="Player"]
@@ -76,6 +77,11 @@ transform = Transform( -0.5, 0, -0.866025, 0, 1, 0, 0.866025, 0, -0.5, 18.259, 7
 [node name="Target4" parent="Target_Container" instance=ExtResource( 4 )]
 transform = Transform( 0.766044, 0, -0.642788, 0, 1, 0, 0.642788, 0, 0.766044, -68.4648, 10.0178, -58.4939 )
 
+[node name="Drone_Container" type="Spatial" parent="."]
+
+[node name="Drone" parent="Drone_Container" instance=ExtResource( 10 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, 100 )
+
 [node name="NPC" parent="." instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 42.3635, 0.0977631, 0 )
 script = ExtResource( 7 )
@@ -89,6 +95,14 @@ shape = SubResource( 3 )
 
 [node name="UI" type="CanvasLayer" parent="."]
 script = ExtResource( 9 )
+
+[node name="Damage" type="ColorRect" parent="UI"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 1, 0, 0, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Background" type="ColorRect" parent="UI"]
 anchor_right = 1.0
