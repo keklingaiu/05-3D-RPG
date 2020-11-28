@@ -15,11 +15,11 @@ func _ready():
 	Dialogue.connect("finished_dialogue", self, "finished")
 
 
-func _on_Area_body_entered(body):
+func _on_Area_body_entered(_body):
 	Dialogue.start_dialogue(dialogue)
 
 
-func _on_Area_body_exited(body):
+func _on_Area_body_exited(_body):
 	Dialogue.hide_dialogue()
 	
 func finished():

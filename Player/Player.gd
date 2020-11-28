@@ -2,6 +2,7 @@ extends KinematicBody
 
 onready var Camera = get_node("/root/Game/Player/Pivot/Camera")
 onready var Pivot = get_node("/root/Game/Player/Pivot")
+onready var Explosion = load("res://Explosions/Explosion.tscn")
 
 var velocity = Vector3()
 var gravity = -9.8
@@ -38,6 +39,9 @@ func _physics_process(_delta):
 		$AnimationTree.active = false
 		$AnimationPlayer.play("Shoot")
 		if target != null and target.is_in_group("target"):
+			var explosion = Explosion.instance()
+			explosion.global_transform.origin = $Pivot/RayCast.get_collision_point()
+			get_node("/root/Game/Explosions").add_child(explosion)
 			target.die()
 	if global_transform.origin.y < -10:
 		get_tree().change_scene("res://UI/Game_Over.tscn")
