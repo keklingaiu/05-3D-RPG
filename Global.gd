@@ -4,7 +4,8 @@ var timer = 0
 var score = 0
 
 func _ready():
-	update_score(0)
+	#update_score(0)
+	pass
 	
 func reset():
 	timer = 0

@@ -40,8 +40,8 @@ func _physics_process(_delta):
 		$AnimationPlayer.play("Shoot")
 		if target != null and target.is_in_group("target"):
 			var explosion = Explosion.instance()
-			explosion.global_transform.origin = $Pivot/RayCast.get_collision_point()
 			get_node("/root/Game/Explosions").add_child(explosion)
+			explosion.global_transform.origin = $Pivot/RayCast.get_collision_point()
 			target.die()
 	if global_transform.origin.y < -10:
 		get_tree().change_scene("res://UI/Game_Over.tscn")
