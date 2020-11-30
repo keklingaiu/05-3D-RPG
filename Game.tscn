@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Player/Player.gd" type="Script" id=1]
 [ext_resource path="res://Player/Player.tscn" type="PackedScene" id=2]
@@ -11,7 +11,30 @@
 [ext_resource path="res://UI/UI.gd" type="Script" id=9]
 [ext_resource path="res://Drone/Drone.tscn" type="PackedScene" id=10]
 
-[sub_resource type="SpatialMaterial" id=1]
+[sub_resource type="PanoramaSky" id=1]
+
+[sub_resource type="Environment" id=2]
+background_mode = 3
+background_sky = SubResource( 1 )
+background_color = Color( 0.298039, 0.286275, 0.286275, 1 )
+ambient_light_color = Color( 0.329412, 0.0784314, 0.886275, 1 )
+ambient_light_energy = 0.5
+fog_enabled = true
+fog_color = Color( 0.490196, 0.588235, 0.686275, 1 )
+fog_sun_color = Color( 0.85098, 0.607843, 0.117647, 1 )
+fog_depth_end = 125.0
+fog_depth_curve = 0.870551
+tonemap_mode = 3
+tonemap_white = 13.77
+ss_reflections_enabled = true
+dof_blur_far_enabled = true
+dof_blur_far_distance = 30.0
+glow_enabled = true
+glow_intensity = 0.6
+glow_strength = 0.85
+glow_bloom = 0.3
+
+[sub_resource type="SpatialMaterial" id=3]
 albedo_color = Color( 0, 0.203922, 1, 1 )
 emission_enabled = true
 emission = Color( 0.0196078, 0.27451, 0.94902, 1 )
@@ -19,15 +42,28 @@ emission_energy = 3.0
 emission_operator = 0
 emission_on_uv2 = false
 
-[sub_resource type="SphereMesh" id=2]
-material = SubResource( 1 )
+[sub_resource type="SphereMesh" id=4]
+material = SubResource( 3 )
 radius = 0.5
 height = 1.0
 
-[sub_resource type="SphereShape" id=3]
+[sub_resource type="SphereShape" id=5]
 radius = 5.15594
 
+[sub_resource type="GIProbeData" id=6]
+bounds = AABB( -120, -30, -120, 240, 60, 240 )
+cell_size = 1.875
+to_cell_xform = Transform( 0.533333, 0, 0, 0, 0.533333, 0, 0, 0, 0.533333, 64, 16, 64 )
+dynamic_data = PoolIntArray( 0, 8, 128, 32, 128, 1, 0, 0, 0, 1107296256, 0, 0, 7, 0, 33, 0, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 8355711, 0 )
+dynamic_range = 4
+bias = 1.5
+normal_bias = 0.0
+propagation = 0.7
+
 [node name="Game" type="Spatial"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 2 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
 transform = Transform( -0.766044, 0, -0.642788, 0, 1, 0, 0.642788, 0, -0.766044, 41.2165, 0.384771, 13.342 )
@@ -50,7 +86,7 @@ script = ExtResource( 5 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 50 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Player/Pivot/RayCast/Reticle"]
-mesh = SubResource( 2 )
+mesh = SubResource( 4 )
 material/0 = null
 
 [node name="lowpoly_scene" parent="." instance=ExtResource( 3 )]
@@ -93,7 +129,7 @@ collision_layer = 2
 collision_mask = 2
 
 [node name="CollisionShape" type="CollisionShape" parent="NPC/Area"]
-shape = SubResource( 3 )
+shape = SubResource( 5 )
 
 [node name="UI" type="CanvasLayer" parent="."]
 script = ExtResource( 9 )
@@ -160,6 +196,16 @@ anchor_bottom = 1.0
 margin_top = -20.0
 margin_bottom = 10.0
 bbcode_enabled = true
+
+[node name="GIProbe" type="GIProbe" parent="."]
+extents = Vector3( 120, 30, 120 )
+data = SubResource( 6 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+transform = Transform( -0.389599, -0.347603, 0.852868, -0.416198, 0.892539, 0.173648, -0.821579, -0.287309, -0.492404, 56.032, 20, -72.553 )
+light_color = Color( 1, 0.843137, 0, 1 )
+light_energy = 1.5
+shadow_enabled = true
 [connection signal="body_entered" from="NPC/Area" to="NPC" method="_on_Area_body_entered"]
 [connection signal="body_exited" from="NPC/Area" to="NPC" method="_on_Area_body_exited"]
 [connection signal="timeout" from="UI/Timer" to="UI" method="_on_Timer_timeout"]
